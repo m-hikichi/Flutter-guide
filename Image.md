@@ -6,7 +6,7 @@
 2. アプリケーションの `pubspec.yaml` ファイルに、以下のコードを追加します。これにより、アプリが画像ファイルを認識できるようになります。
     ```yaml
     flutter:
-    assets:
+      assets:
         - assets/images/
     ```
 
