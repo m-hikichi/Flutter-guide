@@ -2,7 +2,6 @@
 
 ## 目次
 
-- [0. Flutterのインストール](Install.md)
 - [1. Widgetの基本](Widget.md)
 - [2. Column / Row](Column・Row.md)
 - [3. Image](Image.md)
@@ -13,7 +12,9 @@
 - [8. Riverpod](Riverpod.md)
 - [9. ListView](ListView.md)
 - [10. go_router](go_router.md)
+- [11. Drawer](Drawer.md)
 
-## その他
+## 付録
 
+- [Flutterのインストール](Install.md)
 - [Flutter コマンド一覧](flutter_command.md)
