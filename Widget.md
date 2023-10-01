@@ -55,6 +55,7 @@ const scaffoldWidget = Scaffold(body: centerWidget);
 |`endDrawer`|`drawer`と同じですが、画面の右側からスライドして出てきます。|
 |`body`|アプリケーションの主要なコンテンツが表示される部分です。ここにはテキスト、画像、ビデオなど、あらゆる種類のウィジェットを配置することができます。|
 |`floatingActionButton`|画面上に浮かぶ丸いボタンで、ユーザーがタップすると何か特定のアクション（例えば新しいページを開く、データを保存するなど）を起動します。|
+|`bottomNavigationBar`|画面下部に表示されるバーで、ユーザーがアプリ内で簡単に移動できるようにするためのものです。|
 
 ### `MaterialApp`
 
