@@ -14,6 +14,7 @@
 - [10. go_router](go_router.md)
 - [11. Drawer](Drawer.md)
 - [12. BottomNavigationBar](BottomNavigationBar.md)
+- [13. Switch / Slider](Switch・Slider.md)
 
 ## 付録
 
