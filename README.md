@@ -17,6 +17,7 @@
 - [13. Switch / Slider](Switch・Slider.md)
 - [14. Radio / Checkbox](Radio・Checkbox.md)
 - [15. ProgressIndicator](ProgressIndicator.md)
+- [16. freezed](freezed.md)
 
 ## 付録
 
