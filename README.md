@@ -18,6 +18,7 @@
 - [14. Radio / Checkbox](Radio・Checkbox.md)
 - [15. ProgressIndicator](ProgressIndicator.md)
 - [16. freezed](freezed.md)
+- [17. Carousel](carousel.md)
 - [25. Dropdown](dropdown.md)
 
 ## 付録
