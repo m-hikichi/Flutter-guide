@@ -21,6 +21,7 @@
 - [17. Carousel](carousel.md)
 - [18. json](json.md)
 - [25. Dropdown](dropdown.md)
+- [28. Dialog](Dialog.md)
 
 ## 付録
 
