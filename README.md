@@ -22,6 +22,7 @@
 - [18. json](json.md)
 - [25. Dropdown](dropdown.md)
 - [28. Dialog](Dialog.md)
+- [29. shared_prefs](shared_prefs.md)
 
 ## 付録
 
