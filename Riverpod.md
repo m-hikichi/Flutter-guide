@@ -4,154 +4,154 @@ RiverpodはFlutterアプリケーションの状態管理と依存性注入の�
 
 以下に、Riverpodを使ったFlutterアプリの基本的なセットアップと使用方法を説明します。
 
-## 準備
+## パッケージのインストール
 
-### 1. プロジェクトにRiverpodを追加する
+### 1. pubspec.yamlにパッケージを追記する
 
-`pubspec.yaml`ファイルに、`flutter_riverpod`パッケージを追加します。これにより、Riverpodをプロジェクトに導入できます。
+1. `pubspec.yaml`ファイルに、`dependencies`の下に`flutter_riverpod`パッケージを追加します。
 
-```yaml
-dev_dependencies:
-  flutter_riverpod:
-```
+    ```yaml
+    dependencies:
+      flutter_riverpod:
+    ```
 
-### 2. 必要なライブラリをインポートする
+2. `pubspec.yaml`を開き、`dev_dependencies`の下に`build_runner`を追加する。
 
-`main.dart`ファイルで、Riverpodライブラリをインポートします。
+    ```yaml
+    dev_dependencies:
+      build_runner:
+      riverpod_generator:
+    ```
 
+3. 以下のコマンドを実行し、パッケージのインストールを行う。
+
+    ```bash
+    flutter pub get
+    ```
+
+## 状態の作成
+
+### State
+
+Stateは、アプリケーションの「状態」を表します。これは、アプリケーションの動作や表示に影響を与えるデータで、ユーザーの操作や外部のイベントによって変化します。この変化する「状態」をうまく管理することを「状態管理」と呼びます。
+
+### Notifier
+
+Notifierは、状態を「書き換える」役割を持つエンティティです。具体的には、Notifierは状態の変更をトリガーし、その変更をリッスンしているウィジェットに通知します。これにより、状態の変更が発生したときにUIを適切に更新することができます。Riverpodでは、StateNotifierやChangeNotifierなど、状態の変更を管理するためのクラスが提供されています。
+
+### Provider
+
+Providerは、状態を守る「壁」のようなものです。Providerを使用すると、状態を安全にカプセル化し、そのアクセスを制御することができます。具体的には、ConsumerWidgetのrefを用いることで、Providerが提供する状態を参照することができます。しかし、それ以外のウィジェットからは、Providerが保護する状態に直接アクセスすることはできません。これにより、状態の不適切な変更やアクセスを防ぐことができ、アプリケーションの安全性と信頼性を向上させることができます。
+
+### Stateのデータに対応するNotifierとProvider
+
+|State||Notifier|Provider|
+|:--:|:--|:--:|:--:|
+|Simple系|`int`, `String`|Notifier|NotifierProvider|
+|Complex系|`List`, `class`|Notifier|NotifierProvider|
+|Future系|`Future<String>`|AsyncNotifier|AsyncNotifierProvider|
+|Stream系|`Stream<String>`|AsyncNotifier|AsyncNotifierProvider|
+
+`riverpod_generator`パッケージを用いた場合、以下のNotifierを定義することで、上記の表を意識せずにNotifier・Providerを作成できる
 ```dart
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-```
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+part 'xxx.g.dart'; // ファイル名(xxx.dart)と同じにする
 
-### 3. アプリケーションをプロバイダースコープでラップする
-
-Riverpodのプロバイダーを使用するには、アプリケーション全体を`ProviderScope`内にラップする必要があります。以下は、`main.dart`内でこれを行う方法です。
-
-```dart
-void main() {
-  // アプリ
-  final app = MaterialApp(home: Sample());
-
-  // プロバイダースコープで囲む
-  final scope = ProviderScope(child: app);
-
-  // アプリを動かす
-  runApp(scope);
-}
-```
-
-### 4. プロバイダーを設定する
-
-Riverpodを使用する際には、データの状態を管理するためのプロバイダーを定義します。以下は、簡単なプロバイダーの例です。
-
-```dart
-final nicknameProvider = StateProvider<String>(
-  (ref) {
-    // 初期値を設定
-    return "ボタンを押すことで変化します";
-  }
-);
-```
-
-### 5. ConsumerWidgetの設定
-
-ConsumerWidgetはRiverpodライブラリ内のウィジェットで、データを監視し、UIを構築するために使用されます。
-
-```dart
-class Sample extends ConsumerWidget {
-  const Sample({Key? key}) : super(key: key);
-
+@riverpod
+class XxxNotifier extends _$XxxNotifier {
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // ここにウィジェットを構築するためのコードを書きます
+  XXX build() {
+    return x; // 初期値
+  }
+
+  // 状態を更新するコード
+  void updateState() {
+    // 処理を記載
+    state = ...;
   }
 }
 ```
 
-## サンプルコード
+以上のコードを作成後、以下のコマンドを実行することでStateのデータ型に対応したNotifierやProviderを自動で作成してくれる。
 
-以下は、Riverpodを使用して簡単なFlutterアプリを構築するサンプルコードです。
+```bash
+flutter pub run build_runner build --delete-conflicting-outputs
+```
+
+## 作成した状態の使用
+
+### Providerの作成
+
+`riverpod_generator`パッケージを用いて、NotifierとProviderを作成した場合、Providerの名前はNotifierの一番最初の文字を小文字にした名前で自動生成される。  
+例）`S1Notifier`で作成した場合：`s1NotifierProvider`
+
+### ConsumerWidgetの作成
 
 ```dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'xxx.dart';
 
+class XxxWidget extends ConsumerWidget {
+  const XxxWidget({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    
+    // 状態の監視
+    final xxx = ref.watch(xxxNotifierProvider);
+
+    // 状態を更新するためのウィジェットの作成
+    final button = ElevatedButton(
+      onPressed: () {
+        // 状態を編集するための notifier の取得
+        final notifier = ref.read(xxxNotifierProvider.notifier);
+        // notifier を用いて、状態の更新
+        notifier.updateState();
+      },
+      child: const Text("+1"),
+    );
+
+    // 状態の表示
+    final text = Text("状態値：$xxx");
+
+    // ここにウィジェットを構築するためのコードを書きます
+    return Column(children: [text, button],);
+  }
+}
+```
+
+- `ref.watch`：状態を見**続ける**ので、関数スコープから抜けた後も有効のまま。これにより`build`関数を抜けた後に状態を変更しても、変更を検知し画面に反映できる。
+- `ref.listen`：耳を澄まし**続ける**ので、状態が変わったときに「ダイアログを表示」や「スナックバーを表示」するなど、命令を実行した場合に使う。
+  ```dart
+  ref.listen(
+    xxxNotifierProvider,
+    (oldState, newState) { /* 命令コード */ },
+  );
+  ```
+- `ref.read`：状態を読み取る
+
+### main.dartからの呼び出し
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'xxx_widget.dart';
 
 void main() {
   // アプリ
-  const app = MaterialApp(home: Sample());
+  const app = MaterialApp(
+    home: Scaffold(
+      body: Center(
+        child: XxxWidget(),
+      ),
+    ),
+  );
 
   // プロバイダースコープで囲む
   const scope = ProviderScope(child: app);
 
   // アプリを動かす
   runApp(scope);
-}
-
-// プロバイダー
-final nicknameProvider = StateProvider<String>(
-  (ref) {
-    // 変化するデータ
-    return "ボタンを押すことで変化します";
-  }
-);
-
-// 画面
-class Sample extends ConsumerWidget {
-  const Sample({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // データを監視しておく
-    final nickname = ref.watch(nicknameProvider);
-
-    void pushRed(WidgetRef ref) {
-      final notifier = ref.read(nicknameProvider.notifier);
-      notifier.state = "ヒトカゲ";
-    }
-
-    void pushBlue(WidgetRef ref) {
-      final notifier = ref.read(nicknameProvider.notifier);
-      notifier.state = "ゼニガメ";
-    }
-
-    void pushGreen(WidgetRef ref) {
-      final notifier = ref.read(nicknameProvider.notifier);
-      notifier.state = "フシギダネ";
-    }
-
-    final columnWidget = Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(nickname),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-          onPressed: () => pushRed(ref),
-          child: const Text("ボタンに表示するテキスト"),
-        ),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-          onPressed: () => pushBlue(ref),
-          child: const Text("ボタンに表示するテキスト"),
-        ),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-          onPressed: () => pushGreen(ref),
-          child: const Text("ボタンに表示するテキスト"),
-        ),
-      ],
-    );
-
-    final app = MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: columnWidget,
-        ),
-      ),
-    );
-
-    return app;
-  }
 }
 ```
