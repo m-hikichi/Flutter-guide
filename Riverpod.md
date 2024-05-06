@@ -83,7 +83,7 @@ flutter pub run build_runner build --delete-conflicting-outputs
 ### Providerの作成
 
 `riverpod_generator`パッケージを用いて、NotifierとProviderを作成した場合、Providerの名前はNotifierの一番最初の文字を小文字にした名前で自動生成される。  
-例）`S1Notifier`で作成した場合：`s1NotifierProvider`
+例）`XxxNotifier`で作成した場合：`xxxNotifierProvider`
 
 ### ConsumerWidgetの作成
 
@@ -115,7 +115,6 @@ class XxxWidget extends ConsumerWidget {
     // 状態の表示
     final text = Text("状態値：$xxx");
 
-    // ここにウィジェットを構築するためのコードを書きます
     return Column(children: [text, button],);
   }
 }
@@ -130,6 +129,42 @@ class XxxWidget extends ConsumerWidget {
   );
   ```
 - `ref.read`：状態を読み取る
+
+### AsyncValue
+
+Stateが`Future`・`Stream`のなどの非同期データを扱う際に有用です。  
+AsyncValueは、非同期操作の３つの状態を表現します：
+
+- loading：この状態は、非同期操作が完了していないことを示します。つまり、データはまだ「準備中」です。この状態では、通常、ローディングスピナーなどのインジケータを表示します。
+- error：この状態は、非同期操作がエラーで終了したことを示します。エラー情報は、この状態の中に含まれています。この情報を使用して、ユーザにエラーメッセージを表示したり、エラーの回復策を提供したりできます。
+- data：この状態は、非同期操作が成功し、データが「準備OK」であることを示します。この状態では、取得したデータを使用してUIを更新します。
+
+AsyncValueを使用すると、非同期操作の結果を簡単に管理し、それに基づいてUIを更新することができます。
+
+```dart
+class XxxWidget extends ConsumerWidget {
+  const XxxWidget({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    
+    // 状態の監視
+    final xxx = ref.watch(xxxNotifierProvider);
+
+    // 状態の表示
+    final widget = xxx.when(
+      loading: () => const Text("準備中"),
+      error: (e, s) => Text("エラー：$e"), // e: どんなエラー s: どこでエラー の情報が入っている
+      data: (d) => Text("$d"), // d: データ本体
+    )
+
+    // 状態を更新するウィジェットなどを作成するなど
+    ...
+
+    return widget;
+  }
+}
+```
 
 ### main.dartからの呼び出し
 
