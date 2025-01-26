@@ -15,11 +15,11 @@
 - [10. 画面横から表示されるサイドメニュー (Drawer)](front_end/drawer.md)
 - [11. 画面下に表示されるメニューバー (BottomNavigationBar)](front_end/bottomNavigationBar.md)
 - [12. スイッチとスライダー (Switch/Slider)](frond_end/switch+slider.md)
-- [13. ラジオボタンとチェックボタン](front_end/radio+checkbox.md)
+- [13. ラジオボタンとチェックボタン (Radio/Checkbox)](front_end/radio+checkbox.md)
 - [14. インジケーター (ProgressIndicator)](front_end/progressIndicator.md)
 - [15. 横方向のスライダー (Carousel)](front_end/carousel.md)
 - [16. ドロップダウン (Dropdown)](front_end/dropdown.md)
-- [17. ダイアログ](front_end/dialog.md)
+- [17. ダイアログ (Dialog)](front_end/dialog.md)
 
 ### バックエンド
 #### 他言語やサービスとの連携
